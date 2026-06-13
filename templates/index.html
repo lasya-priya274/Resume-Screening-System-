@@ -135,13 +135,13 @@
 
             <!-- Header -->
             <div class="text-center mb-5">
-                <h1 class="display-5 fw-bold">AI-Powered Resume Screening</h1>
+                <h1 class="display-5 fw-bold">Resume Screening System</h1>
                 <p class="lead text-muted">Match candidates intelligently using advanced NLP and semantic analysis</p>
             </div>
 
             <!-- Upload Form -->
             <div class="hero-section p-5">
-                <form method="POST" enctype="multipart/form-data" id="uploadForm">
+                <form action="/" method="POST" enctype="multipart/form-data" id="uploadForm">
 
                     <div class="row g-4">
                         <!-- Job Description -->
@@ -318,13 +318,29 @@
         dropZone.style.background = '#f8fafc';
     });
 
-    dropZone.addEventListener('drop', (e) => {
-        e.preventDefault();
-        dropZone.style.borderColor = '#94a3b8';
-        dropZone.style.background = '#f8fafc';
-        fileInput.files = e.dataTransfer.files;
-        displayFiles(e.dataTransfer.files);
-    });
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+
+    dropZone.style.borderColor = '#94a3b8';
+    dropZone.style.background = '#f8fafc';
+
+    const files = e.dataTransfer.files;
+
+    if (files.length > 10) {
+        alert("Maximum 10 resume files allowed.");
+        return;
+    }
+
+    // Proper way to assign files
+    const dt = new DataTransfer();
+    for (let i = 0; i < files.length; i++) {
+        dt.items.add(files[i]);
+    }
+
+    fileInput.files = dt.files;
+
+    displayFiles(files);
+});
 
     // Form Submit - Loading State
     document.getElementById("uploadForm").addEventListener("submit", function() {
